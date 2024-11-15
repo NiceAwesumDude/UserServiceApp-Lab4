@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "674470359392",
+    "project_id": "userserviceapp-2b56c",
+    "storage_bucket": "userserviceapp-2b56c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674470359392:android:4e84e12069da55e1626e05",
+        "android_client_info": {
+          "package_name": "com.example.userserviceapp_lab4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFNtYMNoXz9D0A5kazWRNQwVyKXtBgq58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
