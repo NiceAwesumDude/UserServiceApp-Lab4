@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.userserviceapp_lab4.R;
 import com.example.userserviceapp_lab4.databinding.ActivitySignUpBinding;
 import com.example.userserviceapp_lab4.utilities.Constants;
+import com.example.userserviceapp_lab4.utilities.PreferenceManager;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.auth.User;
 
@@ -35,23 +36,16 @@ import java.util.HashMap;
 public class SignUpActivity extends AppCompatActivity {
 
     private ActivitySignUpBinding binding;
+    private PreferenceManager preferenceManager;
 
     private String encodeImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //EdgeToEdge.enable(this);
-        //setContentView(R.layout.activity_sign_up);
-        //ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-        //    Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-        //    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-        //    return insets;
-        //});
-
-
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
     }
 
@@ -93,6 +87,13 @@ public class SignUpActivity extends AppCompatActivity {
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .add(user)
                 .addOnSuccessListener(documentReference -> {
+                    preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
+                    preferenceManager.putString(Constants.KEY_NAME, binding.inputName.getText().toString());
+                    preferenceManager.putString(Constants.KEY_Image, encodeImage);
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
 
                 }).addOnFailureListener(exception -> {
                     Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
