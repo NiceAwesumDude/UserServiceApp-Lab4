@@ -82,21 +82,24 @@ public class SignUpActivity extends AppCompatActivity {
         user.put(Constants.KEY_EMAIL, binding.inputEmail.getText().toString());
         user.put(Constants.KEY_PASSWORD, binding.inputPassword.getText().toString());
 
-        user.put(Constants.KEY_Image, encodeImage);
+        user.put(Constants.KEY_IMAGE, encodeImage);
 
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .add(user)
                 .addOnSuccessListener(documentReference -> {
+                    loading(false);
+
                     preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
                     preferenceManager.putString(Constants.KEY_NAME, binding.inputName.getText().toString());
-                    preferenceManager.putString(Constants.KEY_Image, encodeImage);
+                    preferenceManager.putString(Constants.KEY_IMAGE, encodeImage);
 
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
 
                 }).addOnFailureListener(exception -> {
-                    Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    loading(false);
+                    showToast(exception.getMessage());
                 });
     }
 
@@ -135,7 +138,10 @@ public class SignUpActivity extends AppCompatActivity {
     );
 
     private Boolean isValidSignUpDetails() {
-        if (binding.inputName.getText().toString().trim().isEmpty()) {
+        if (encodeImage == null) {
+            showToast("Please select your image");
+            return false;
+        } else if (binding.inputName.getText().toString().trim().isEmpty()) {
             showToast("Please Enter your Name");
             return false;
         } else if (binding.inputEmail.getText().toString().trim().isEmpty()) {
@@ -151,7 +157,7 @@ public class SignUpActivity extends AppCompatActivity {
             showToast("Please Confirm your Password");
             return false;
         } else if (!binding.inputPassword.getText().toString().equals(binding.inputConfirmPassword.getText().toString())) {
-            showToast("Password and Confirmed Password do no match");
+            showToast("Password and Confirmed Password do not match");
             return false;
         } else {
             return true;

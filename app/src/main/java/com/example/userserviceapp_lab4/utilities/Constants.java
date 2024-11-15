@@ -9,6 +9,6 @@ public class Constants {
     public static final String KEY_USER_ID = "userid";
     public static final String KEY_IS_SIGNED_IN = "isSignedIn";
     public static final String KEY_PREFERENCE_NAME = "chatAppPreferences";
-    public static final String KEY_Image = "image";
+    public static final String KEY_IMAGE = "image";
 
 }
